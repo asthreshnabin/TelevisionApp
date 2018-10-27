@@ -76,7 +76,7 @@ class Channels extends Component {
 
 
         this.setState({
-          dataSource: concatedArry,
+          dataSource: result,
           isLoading: false
         }, function () {
 
@@ -271,47 +271,29 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-
-  item: {
-    width: (deviceWidth / 3) - 10,
-    height: (deviceWidth / 3) + 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 0.5,
-    margin: 5,
-    backgroundColor: '#fff',
-    borderColor: '#999'
-  },
-  channel_logo: {
-    width: (deviceWidth / 3) - 20,
-    height: (deviceWidth / 3) - 20,
-    marginTop: -20,
-    alignItems: 'center',
-    alignSelf: 'center'
-  },
-  channel_name: {
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  program: {
-    flexDirection: 'row',
-    backgroundColor: '#fff'
-  },
   container: {
     flex: 1,
   },
-  example: {
-    paddingVertical: 10,
-  },
-  title: {
-    margin: 10,
-    fontSize: 20,
-  },
+    item: {
+        width: (deviceWidth/3)-10,
+        height: (deviceWidth/3)+40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 0.5,
+        margin: 5,
+        backgroundColor: '#fff',
+        borderColor: '#999'
+    },
+    channel_logo: {
+      width: (deviceWidth/3)-20,
+      height: (deviceWidth/3)-20
+    },
+    channel_name:{
+      fontWeight: 'bold',
+      textAlign: 'center'
+    },
+    program:{
+      flexDirection: 'row',
+      backgroundColor: '#fff'
+    }
 });
-
-function display(a) {
-  var hours = Math.trunc(a / 60);
-  var minutes = a % 60;
-  return hours + "hrs : " + minutes + "mins"
-}
-
