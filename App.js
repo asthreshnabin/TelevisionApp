@@ -41,7 +41,7 @@ class Channels extends Component {
 
   componentDidMount() {
     this.setState({ isLoading: true })
-    this.listCategoriesWiseShows()
+    this.listAllTvShows()
   }
 
   listCategoriesWiseShows = () => {
@@ -61,7 +61,7 @@ class Channels extends Component {
     return fetch('http://159.89.172.199/dishtv?genre=TV%20Show')
       .then((response) => response.json())
       .then((responseJson) => {
- 
+
         const result = [];
         const map = new Map();
         for (const item of responseJson) {
@@ -137,15 +137,18 @@ class Programs extends Component {
       .then((responseJson) => {
 
         const result = [];
-        let val = responseJson.sort((a, b) => parseFloat(a.start) - parseFloat(b.start))
-        for (const item of val) {
-          result.push({
-            program_logo: item.program_logo,
-            title: item.title,
-            duration: display(moment(item.stop).diff(moment(item.start), 'minutes')),
-            details: item.synopsis
-
-          });
+        const map = new Map();
+        for (const item of responseJson) {
+          if (!map.has(item.title)) {
+            map.set(item.title, true);    // set any value to Map
+            result.push({
+              title: item.title,
+              program_logo: item.program_logo,
+              title: item.title,
+              duration: item.duration,
+              details: item.synopsis
+            });
+          }
         }
 
         this.setState({
@@ -227,12 +230,15 @@ class Programs extends Component {
                     }
                   }).catch(err => console.error(err))
                 }}>
-                <Image style={styles.channel_logo} source={{ uri: item.program_logo }} resizeMode='contain' />
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                  <Image style={styles.channel_logo} source={{ uri: item.program_logo }} resizeMode='contain' />
+
+                </View>
                 <View style={{ flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', padding: 16, flex: 1 }}>
                   <Text style={{ fontSize: 20 }}>{item.duration}</Text>
                   <Text style={styles.channel_name}>{item.title}</Text>
                   <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Details</Text>
-                  <Text style={{ flex: 1, marginRight: 50 }} >{item.details}</Text>
+                  <Text style={{ flex: 1, marginRight: 12 }} >{item.details}</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -274,26 +280,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-    item: {
-        width: (deviceWidth/3)-10,
-        height: (deviceWidth/3)+40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 0.5,
-        margin: 5,
-        backgroundColor: '#fff',
-        borderColor: '#999'
-    },
-    channel_logo: {
-      width: (deviceWidth/3)-20,
-      height: (deviceWidth/3)-20
-    },
-    channel_name:{
-      fontWeight: 'bold',
-      textAlign: 'center'
-    },
-    program:{
-      flexDirection: 'row',
-      backgroundColor: '#fff'
-    }
+  item: {
+    width: (deviceWidth / 3) - 10,
+    height: (deviceWidth / 3) + 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 0.5,
+    margin: 5,
+    backgroundColor: '#fff',
+    borderColor: '#999'
+  },
+  channel_logo: {
+    width: (deviceWidth / 3) - 20,
+    height: (deviceWidth / 3) - 20,
+    marginLeft: 12,
+    marginRight: 12
+  },
+  channel_name: {
+    fontWeight: 'bold',
+    textAlign: 'left'
+  },
+  program: {
+    flexDirection: 'row',
+    backgroundColor: '#fff'
+  }
 });
